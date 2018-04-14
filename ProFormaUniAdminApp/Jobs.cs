@@ -7,29 +7,32 @@ using System.Threading.Tasks;
 
 namespace ProFormaUniAdminApp
 {
-    class Courses
+    class Jobs
     {
-        public int ID { get; set; }
+        public string ProfName { get; set; }
+        public string Title { get; set; }
         public string Number { get; set; }
         public string CourseLevel { get; set; }
-        public string Name { get; set; }
+        public string CourseName { get; set; }
         public int Room { get; set; }
         public DateTime StartTime { get; set; }
 
-        public Courses()
+
+        public Jobs(SqlDataReader reader)
+        {
+            ProfName = reader["ProfName"].ToString();
+            Title = reader["Title"].ToString();
+            Number = reader["Number"].ToString();
+            CourseLevel = reader["CourseLevel"].ToString();
+            CourseName = reader["CourseName"].ToString();
+            Room = (int)reader["Room"];
+            StartTime = (DateTime)reader["StartTime"];
+
+        }
+        public Jobs()
         {
 
         }
 
-        public Courses(SqlDataReader reader)
-        {
-            ID = (int)reader["ID"];
-            Number = reader["Number"].ToString();
-            CourseLevel = reader["CourseLevel"].ToString();
-            Name = reader["Name"].ToString();
-            Room = (int)reader["Room"];
-            StartTime = (DateTime)reader["StartTime"];
-
-        } 
     }
 }

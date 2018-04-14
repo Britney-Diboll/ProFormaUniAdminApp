@@ -30,13 +30,48 @@ namespace ProFormaUniAdminApp
                         //Adding a professor
                         var newProfessor = Creator.CreateProfessor();
                         Creator.InsertProfessor(conn, newProfessor);
-                        Console.WriteLine($"You have successfully added {newProfessor.Title}{newProfessor.Name}");
+                        Console.WriteLine($"You have successfully added {newProfessor.Title} {newProfessor.Name}");
                         Console.WriteLine("Would you like to add another Professor? Type yes or no");
                         var input = Console.ReadLine();
                         if (input == "no")
                         {
                             running = false;
 
+                        }
+                    }
+                    else if(firstInput == "2")
+                    {
+                        // Adding Course
+                        var newCourse = Creator.CreateCourse();
+                        Creator.InsertCourse(conn, newCourse);
+                        Console.WriteLine($"You have successfully added a new course. {newCourse.Name} starts {newCourse.StartTime} and will be held in room {newCourse.Room}");
+                        Console.WriteLine("Would you like to add another course?");
+                        var input = Console.ReadLine();
+                        if (input == "no")
+                        {
+                            running = false;
+                        }
+                    }
+                    else if (firstInput == "3")
+                    {
+                        // Showing enrolled students
+                        Console.WriteLine("There are no enrolled students at this time!");
+                        Console.WriteLine("Would you like to go back to the main menu?");
+                        var input = Console.ReadLine();
+                        if(input == "no")
+                        {
+                            running = false;
+                        }
+                    }
+                    else if( firstInput == "4")
+                    {
+                        //Shows who is teaching what 
+                        Creator.GetProfessorsAndCourses(conn);
+                        Console.WriteLine("Would you like to go back to the main menu?");
+                        var input = Console.ReadLine();
+                        if (input == "no")
+                        {
+                            running = false;
                         }
                     }
                 }
