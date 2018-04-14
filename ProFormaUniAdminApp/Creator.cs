@@ -97,6 +97,72 @@ namespace ProFormaUniAdminApp
             reader.Close();
             return result;
         }
+
+        public static Students CreateStudent()
+        {
+            Console.WriteLine("Please type your first and last name.");
+            var studentFullName = Console.ReadLine();
+            Console.WriteLine("Please type out your email address.");
+            var studentEmail = Console.ReadLine();
+            Console.WriteLine("What is your mobile phone number?");
+            var studentPhoneNumber = Console.ReadLine();
+            Console.WriteLine("What is your major?");
+            var studentMajor = Console.ReadLine();
+
+
+            var newStudent = new Students
+            {
+
+                FullName = studentFullName,
+                Email = studentEmail,
+                PhoneNumber = studentPhoneNumber,
+                Major = studentMajor,
+            };
+            return newStudent;
+
+        }
+
+        public static void InsertStudent(SqlConnection conn, Students newStudent)
+        {
+            var _insert = "INSERT INTO Students (FullName, Email, PhoneNumber, Major) " + "VALUES (@FullName, @Email, @PhoneNumber, @Major)";
+            var command = new SqlCommand(_insert, conn);
+
+            command.Parameters.AddWithValue("FullName", newStudent.FullName);
+            command.Parameters.AddWithValue("Email", newStudent.Email);
+            command.Parameters.AddWithValue("PhoneNumber", newStudent.PhoneNumber);
+            command.Parameters.AddWithValue("Major", newStudent.Major);
+            command.ExecuteScalar();
+        }
+
+        public static List<Enroll> GetStudentAndCourse(SqlConnection conn)
+        {
+            var _select = "SELECT [Students].[FullName] AS [FullName], [Students].[Email] AS [Email], [Students].[PhoneNumber] AS [PhoneNumber], [Students].[Major] AS [Major], " +
+                          "[Courses].[Name] AS [CourseName], [Courses].[Number] AS [Number], [Courses].[CourseLevel] AS [CourseLevel], [Courses].[Room] AS [Room], [Courses].[StartTime] AS [StartTime]" +
+                          " FROM [Students]" +
+                          " JOIN [Enroll] ON [Enroll].[StudentID] = [Students].[ID]" +
+                          " JOIN [Courses] ON [Courses].[ID] = [Enroll].[CourseID]";
+            var query = new SqlCommand(_select, conn);
+            var reader = query.ExecuteReader();
+            var result = new List<Enroll>();
+            while (reader.Read())
+            {
+                var _enroll = new Enroll(reader);
+                Console.WriteLine($"{_enroll.FullName} is enrolled in {_enroll.CourseName}.");
+
+            }
+            reader.Close();
+            return result;
+        }
+
+        public static void InsertEnroll(SqlConnection conn, Enroll newEnroll)
+        {
+            var _insert = "INSERT INTO Enroll (CourseID, StudentID) " + "VALUES (@CourseID, @StudentID)";
+            var command = new SqlCommand(_insert, conn);
+
+            command.Parameters.AddWithValue("CourseID", newEnroll.CourseID);
+            command.Parameters.AddWithValue("StudentID", newEnroll.StudentID);
+            command.ExecuteScalar();
+        }
     }
 
 }

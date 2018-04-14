@@ -22,56 +22,97 @@ namespace ProFormaUniAdminApp
                 {
                     Console.WriteLine("Welcome to ProForma University, Professors!");
                     Console.WriteLine("Please choose one of the following options.\n");
-                    Console.WriteLine(" 1. Add a new Professor\n 2. Add Course\n 3. View students enrolled in a course\n 4. View all courses, Professor teaching the course and students enrolled");
+                    Console.WriteLine(" 1. Admin\n 2. Student");
+                    var Ainput = Console.ReadLine();
+                    if (Ainput == "1")
+                    {
+                        Console.WriteLine("Please choose one of the following options.\n");
+                        Console.WriteLine(" 1. Add a new Professor\n 2. Add Course\n 3. View students enrolled in a course\n 4. View all courses, Professor teaching the course and students enrolled");
 
-                    var firstInput = Console.ReadLine();
-                    if (firstInput == "1")
-                    {
-                        //Adding a professor
-                        var newProfessor = Creator.CreateProfessor();
-                        Creator.InsertProfessor(conn, newProfessor);
-                        Console.WriteLine($"You have successfully added {newProfessor.Title} {newProfessor.Name}");
-                        Console.WriteLine("Would you like to add another Professor? Type yes or no");
-                        var input = Console.ReadLine();
-                        if (input == "no")
+                        var firstInput = Console.ReadLine();
+                        if (firstInput == "1")
                         {
-                            running = false;
+                            //Adding a professor
+                            var newProfessor = Creator.CreateProfessor();
+                            Creator.InsertProfessor(conn, newProfessor);
+                            Console.WriteLine($"You have successfully added {newProfessor.Title} {newProfessor.Name}");
+                            Console.WriteLine("Would you like to add another Professor? Type yes or no");
+                            var input = Console.ReadLine();
+                            if (input == "no")
+                            {
+                                running = false;
 
+                            }
+                        }
+                        else if (firstInput == "2")
+                        {
+                            // Adding Course
+                            var newCourse = Creator.CreateCourse();
+                            Creator.InsertCourse(conn, newCourse);
+                            Console.WriteLine($"You have successfully added a new course. {newCourse.Name} starts {newCourse.StartTime} and will be held in room {newCourse.Room}");
+                            Console.WriteLine("Would you like to add another course?");
+                            var input = Console.ReadLine();
+                            if (input == "no")
+                            {
+                                running = false;
+                            }
+                        }
+                        else if (firstInput == "3")
+                        {
+                            // Showing enrolled students
+                            Creator.GetStudentAndCourse(conn);
+                            Console.WriteLine();
+                            Console.WriteLine("Would you like to go to the main menu?");
+                            var input = Console.ReadLine();
+                            if (input == "no")
+                            {
+                                running = false;
+                            }
+                        }
+                        else if (firstInput == "4")
+                        {
+                            //Shows who is teaching what 
+                            Creator.GetProfessorsAndCourses(conn);
+                            Console.WriteLine("Would you like to go back to the main menu?");
+                            var input = Console.ReadLine();
+                            if (input == "no")
+                            {
+                                running = false;
+                            }
                         }
                     }
-                    else if(firstInput == "2")
+                    else if(Ainput == "2")
                     {
-                        // Adding Course
-                        var newCourse = Creator.CreateCourse();
-                        Creator.InsertCourse(conn, newCourse);
-                        Console.WriteLine($"You have successfully added a new course. {newCourse.Name} starts {newCourse.StartTime} and will be held in room {newCourse.Room}");
-                        Console.WriteLine("Would you like to add another course?");
-                        var input = Console.ReadLine();
-                        if (input == "no")
+                        Console.WriteLine("Please choose one of the following options.\n");
+                        Console.WriteLine(" 1. New student enrollment.\n 2. Already enrolled student");
+                        var inputone = Console.ReadLine();
+                        if (inputone == "1")
                         {
-                            running = false;
+                            
+                            var newStudent = Creator.CreateStudent();
+                            Creator.InsertStudent(conn, newStudent);
+                            Console.WriteLine("You have successfully enrolled as a student in Proforma University.\n Please choose one of the following courses to enroll in.");
+                            Console.WriteLine(" 1. Intro to Star Wars\n 2. How to assert dominance over your cat\n 3. The Deep Bluie\n 4. The Continuing Saga of Star Wars\n\n Select a number");
+                            var inputtwo = Console.ReadLine();
+                            if(inputtwo == "")
+                            {
+                                /* var newEnroll = new Enroll
+                                 {
+                                     StudentID = newStudent.ID,
+                                     CourseID = 1
+                                 };
+                                 Creator.InsertEnroll(conn, newEnroll); */
+                                Console.WriteLine("At this time you must go into the University to enroll into a specific class. Please call 1-800-PRO-FORM if you have any questions or concerns!");
+                            }
+                            else 
+                                running = false;
+                            
                         }
-                    }
-                    else if (firstInput == "3")
-                    {
-                        // Showing enrolled students
-                        Console.WriteLine("There are no enrolled students at this time!");
-                        Console.WriteLine("Would you like to go back to the main menu?");
-                        var input = Console.ReadLine();
-                        if(input == "no")
+                        else if (inputone == "2")
                         {
-                            running = false;
-                        }
-                    }
-                    else if( firstInput == "4")
-                    {
-                        //Shows who is teaching what 
-                        Creator.GetProfessorsAndCourses(conn);
-                        Console.WriteLine("Would you like to go back to the main menu?");
-                        var input = Console.ReadLine();
-                        if (input == "no")
-                        {
-                            running = false;
+                            Creator.GetStudentAndCourse(conn);
+                            Console.WriteLine();
+                            Console.WriteLine("Would you like to go to the main menu?");
                         }
                     }
                 }
