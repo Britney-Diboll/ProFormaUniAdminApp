@@ -156,12 +156,27 @@ namespace ProFormaUniAdminApp
 
         public static void InsertEnroll(SqlConnection conn, Enroll newEnroll)
         {
-            var _insert = "INSERT INTO Enroll (CourseID, StudentID) " + "VALUES (@CourseID, @StudentID)";
+            var _insert = "INSERT INTO Enroll (CourseID, StudentID) VALUES (@CourseID, @StudentID)";
             var command = new SqlCommand(_insert, conn);
 
             command.Parameters.AddWithValue("CourseID", newEnroll.CourseID);
             command.Parameters.AddWithValue("StudentID", newEnroll.StudentID);
             command.ExecuteScalar();
+        }
+
+        public static Students GetLastStudent(SqlConnection conn)
+        {
+            var _select = "SELECT TOP 1 * FROM Students ORDER BY ID DESC";
+            var query = new SqlCommand(_select, conn);
+            var result = new Students();
+            var reader = query.ExecuteReader();
+            while (reader.Read())
+            {
+                result = new Students(reader);
+                Console.WriteLine($"You have successfully enrolled , we look forward to seeing you soon!");
+            }
+            reader.Close();
+            return result;
         }
     }
 

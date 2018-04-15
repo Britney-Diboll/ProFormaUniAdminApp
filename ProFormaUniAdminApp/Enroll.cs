@@ -33,8 +33,6 @@ namespace ProFormaUniAdminApp
             Email = reader["Email"].ToString();
             PhoneNumber = reader["PhoneNumber"].ToString();
             Major = reader["Major"].ToString();
-           
-
         }
         public Enroll()
         {
